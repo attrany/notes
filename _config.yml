@@ -4,10 +4,10 @@
 
 # Site
 title: 万有引力
-subtitle: 好奇·敬畏·发现
+subtitle: 努力看得更远
 description:
 author: Attrany <attrany@qq.com>
-language: zh-Hans
+language: zh-CN
 timezone:
 
 # URL
@@ -72,7 +72,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: journal
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
