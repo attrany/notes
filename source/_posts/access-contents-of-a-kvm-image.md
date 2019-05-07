@@ -129,7 +129,7 @@ $ ln -s /opt/glibc-2.14/lib/libc.so.6 /lib64/libc.so.6
     - 分区是基于物理磁盘的，是系统文件管理时识别用的磁盘地址，分区表是直接写在 MBR 或者 GPT 里面的，相对于卷来说更为底层。
     - 卷是由LVM(Logical Volume Manager)进行管理，LVM是在磁盘分区和文件系统之间添加的一个逻辑层。通俗来讲就是把若干物理磁盘看为一个整体，在这个整体上进行逻辑分卷，以实现linux系统动态扩充磁盘容量的需求。
     
-    ![LVM示意图](https://imgsa.baidu.com/baike/s%3D220/sign=0b4099b7b44543a9f11bfdce2e168a7b/8b13632762d0f70329d6d29f0bfa513d2697c509.jpg)
+    ![LVM示意图](https://attrany.oss-cn-beijing.aliyuncs.com/notes/20190507222452.png)
 
 - 什么是循环设备(loop device)
     - 在类 UNIX 系统里，loop 设备是一种伪设备(pseudo-device)，或者也可以说是仿真设备。它能使我们像块设备一样访问一个文件。
