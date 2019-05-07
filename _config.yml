@@ -74,6 +74,28 @@ pagination_dir: page
 ## Themes: https://hexo.io/themes/
 theme: journal
 
+# douban Plugin (disabled)
+#douban:
+#  user: mythsman
+#  builtin: true
+#  book:
+#    title: '读书'
+#    quote: '读书可以经历一千种人生，不读书的人只能活一次'
+#  movie:
+#    title: '电影'
+#    quote: '生活不是电影，生活比电影苦'
+#  timeout: 10000
+
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+  hub:
+  content:
+  content_limit: 140
+  content_limit_delim: ' '
+  order_by: -date
+
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
