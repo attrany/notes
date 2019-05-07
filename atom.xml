@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>万有引力</title>
+  
+  <subtitle>努力看得更远</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://notes.attrany.com/"/>
+  <updated>2019-05-07T15:27:30.996Z</updated>
+  <id>http://notes.attrany.com/</id>
+  
+  <author>
+    <name>Attrany &lt;attrany@qq.com&gt;</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>开启新篇章</title>
+    <link href="http://notes.attrany.com/2019/04/30/restore/"/>
+    <id>http://notes.attrany.com/2019/04/30/restore/</id>
+    <published>2019-04-30T18:44:28.000Z</published>
+    <updated>2019-05-07T15:27:30.996Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;我是测试内容&lt;/p&gt;
+
+        
+      
+    
+    </summary>
+    
+    
+      <category term="feafe" scheme="http://notes.attrany.com/tags/feafe/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在PVE宿主机上访问KVM虚拟机镜像文件中的内容</title>
+    <link href="http://notes.attrany.com/2017/03/02/access-contents-of-a-kvm-image/"/>
+    <id>http://notes.attrany.com/2017/03/02/access-contents-of-a-kvm-image/</id>
+    <published>2017-03-02T14:54:27.000Z</published>
+    <updated>2019-05-07T15:27:30.996Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;问题背景&quot;&gt;&lt;a href=&quot;#问题背景&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="工作日常" scheme="http://notes.attrany.com/categories/%E5%B7%A5%E4%BD%9C%E6%97%A5%E5%B8%B8/"/>
+    
+    
+      <category term="KVM" scheme="http://notes.attrany.com/tags/KVM/"/>
+    
+      <category term="虚拟机" scheme="http://notes.attrany.com/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+    
+      <category term="镜像" scheme="http://notes.attrany.com/tags/%E9%95%9C%E5%83%8F/"/>
+    
+      <category term="images" scheme="http://notes.attrany.com/tags/images/"/>
+    
+      <category term="LVM" scheme="http://notes.attrany.com/tags/LVM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用gitlab-ci进行android项目构建</title>
+    <link href="http://notes.attrany.com/2017/03/02/build-android-project-by-gitlab-ci/"/>
+    <id>http://notes.attrany.com/2017/03/02/build-android-project-by-gitlab-ci/</id>
+    <published>2017-03-02T14:53:37.000Z</published>
+    <updated>2019-05-07T15:27:30.996Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="工作日常" scheme="http://notes.attrany.com/categories/%E5%B7%A5%E4%BD%9C%E6%97%A5%E5%B8%B8/"/>
+    
+    
+      <category term="gitlab" scheme="http://notes.attrany.com/tags/gitlab/"/>
+    
+      <category term="ci" scheme="http://notes.attrany.com/tags/ci/"/>
+    
+      <category term="gitlab-ci" scheme="http://notes.attrany.com/tags/gitlab-ci/"/>
+    
+      <category term="android" scheme="http://notes.attrany.com/tags/android/"/>
+    
+      <category term="build" scheme="http://notes.attrany.com/tags/build/"/>
+    
+      <category term="构建" scheme="http://notes.attrany.com/tags/%E6%9E%84%E5%BB%BA/"/>
+    
+      <category term="打包" scheme="http://notes.attrany.com/tags/%E6%89%93%E5%8C%85/"/>
+    
+  </entry>
+  
+</feed>

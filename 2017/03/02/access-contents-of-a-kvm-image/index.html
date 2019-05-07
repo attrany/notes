@@ -1,0 +1,305 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <title>在PVE宿主机上访问KVM虚拟机镜像文件中的内容 - 万有引力</title>
+<meta charset="utf-8">
+<meta name="X-UA-Compatible" content="IE=edge">
+<meta name="author" content="Attrany &lt;attrany@qq.com&gt;">
+<meta name="description" content="问题背景在进行android项目构建尝试的过程中，遇到了一个棘手的问题。但是，在解决这个问题的过程中，引发了一个更...">
+<meta name="keywords" content>
+
+<link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml">
+
+    <meta charset="utf-8">
+    <meta name="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="renderer" content="webkit">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/journal.css?53180660">
+
+<script src="/js/loadCSS.js"></script>
+<script>
+    loadCSS("https://fonts.googleapis.com/css?family=Lora|Montserrat|Fira+Mono|Material+Icons");
+    (function (d) {
+        var config = {
+                kitId: 'dwg1tuc',
+                scriptTimeout: 3000,
+                async: true
+            },
+            h = d.documentElement, t = setTimeout(function () {
+                h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive";
+            }, config.scriptTimeout), tk = d.createElement("script"), f = false,
+            s = d.getElementsByTagName("script")[0], a;
+        h.className += " wf-loading";
+        tk.src = 'https://use.typekit.net/' + config.kitId + '.js';
+        tk.async = true;
+        tk.onload = tk.onreadystatechange = function () {
+            a = this.readyState;
+            if (f || a && a != "complete" && a != "loaded") return;
+            f = true;
+            clearTimeout(t);
+            try {
+                Typekit.load(config)
+            } catch (e) {
+            }
+        };
+        s.parentNode.insertBefore(tk, s)
+    })(document);
+</script>
+<noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora|Montserrat|Anonymous+Pro:400|Material+Icons">
+</noscript>
+</head>
+<body>
+<div id="top"></div>
+<div id="app">
+<div class="single-column-drawer-container" ref="drawer" v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+    <div class="drawer-content">
+        <div class="drawer-menu">
+            <a class="a-block drawer-menu-item false" href="http://notes.attrany.com">
+                首页
+            </a>
+            <a class="a-block drawer-menu-item false" href="/archives">
+                归档
+            </a>
+
+            
+            
+
+            
+            <a class="a-block drawer-menu-item" href="/atom.xml">
+                RSS
+            </a>
+            
+        </div>
+    </div>
+</div>
+<transition name="fade">
+    <div v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if="isDrawerOpen" v-on:click="toggleDrawer"></div>
+</transition>
+<nav ref="navBar" class="navbar sticky-top navbar-light single-column-nav-container">
+    <div ref="navBackground" class="nav-background"></div>
+    <div class="container container-narrow nav-content">
+        <button id="nav_dropdown_btn" class="nav-dropdown-toggle" type="button" v-on:click="toggleDrawer">
+            <i class="material-icons">
+                menu
+            </i>
+        </button>
+        <a ref="navTitle" class="navbar-brand" href="/">
+            万有引力
+        </a>
+    </div>
+</nav>
+<div class="single-column-header-container" ref="pageHead" v-bind:style="{ transform: 'translateZ(0px) translateY('+.3*scrollY+'px)', opacity: 1-navOpacity }">
+    <a href="/">
+        <div class="single-column-header-title">万有引力</div>
+        <div class="single-column-header-subtitle"></div>
+    </a>
+</div>
+<div ref="sideContainer" class="side-container">
+    <a class="a-block nav-head false" href="/">
+        <div class="nav-title">
+            万有引力
+        </div>
+        <div class="nav-subtitle">
+            The only thing I know is that I know nothing.
+        </div>
+    </a>
+
+    <div class="nav-link-list">
+        <a class="a-block no-tint nav-link-item false" href="/archives">
+            归档
+        </a>
+
+        
+        
+
+        
+        <a class="a-block no-tint nav-link-item" href="/atom.xml">
+            RSS
+        </a>
+        
+    </div>
+
+    
+    <div class="nav-footer">
+        Proudly published with Hexo<br>
+        
+        Theme <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> by <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a><br>
+        
+        &copy; 2019 <a href="http://notes.attrany.com">万有引力</a>
+    </div>
+</div>
+<div ref="extraContainer" class="extra-container">
+    <div class="pagination">
+        <a id="globalBackToTop" class="pagination-action animated-visibility" href="#top" :class="{ invisible: scrollY == 0 }">
+            <i class="material-icons pagination-action-icon">
+                keyboard_arrow_up
+            </i>
+        </a>
+
+        
+    </div>
+</div>
+
+<div ref="streamContainer" class="stream-container">
+    <div class="post-list-container post-list-container-shadow">
+        <div class="post">
+            <div class="post-head-wrapper-text-only" style="background-image: url('')">
+                <div class="post-title">
+                    在PVE宿主机上访问KVM虚拟机镜像文件中的内容
+                    <div class="post-meta">
+                        <time datetime="2017-03-02T14:54:27.000Z" itemprop="datePublished">
+                            2017-03-02 14:54
+                        </time>&nbsp;
+                        
+                        
+                        <i class="material-icons" style>folder</i>
+                        
+                        <a href="/categories/工作日常/">工作日常</a>
+                        
+                        
+    
+                        
+                        
+                        <i class="material-icons" style>label</i>
+                        
+                        <a href="/tags/KVM/">KVM</a>, 
+                        
+                        <a href="/tags/虚拟机/">虚拟机</a>, 
+                        
+                        <a href="/tags/镜像/">镜像</a>, 
+                        
+                        <a href="/tags/images/">images</a>, 
+                        
+                        <a href="/tags/LVM/">LVM</a>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+    
+            <div class="post-body-wrapper">
+                <div class="post-body">
+                    <h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>在进行android项目构建尝试的过程中，遇到了一个棘手的问题。但是，在解决这个问题的过程中，引发了一个更为严重的结果。</p>
+<p>在android构建过程中，aapt报错:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">libc.so.6: version `GLIBC_2.14` not found</span><br></pre></td></tr></table></figure></p>
+<p>运行命令，发现centos6下的libc版本只支持到2.12</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ldd --version</span><br><span class="line">ldd (GNU) libc 2.12</span><br></pre></td></tr></table></figure>
+<p>然而，按照 此链接 所提供的信息升级libc库，安装完成并配置完环境变量<em>$LD_LIBRARY_PATH</em> 后，构建程序无响应，最后超时退出，看起来是卡在了什么地方。</p>
+<p>操作过程中注意到这样一句话，但是当时没在意。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">You cannot update glibc on Centos6 safely.</span><br></pre></td></tr></table></figure></p>
+<p>后来经过查询，尝试按照 此链接 提供的回答，尝试更改软连接的指向。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ln -s /opt/glibc-2.14/lib/libc.so.6 /lib64/libc.so.6</span><br></pre></td></tr></table></figure></p>
+<p>然后，<code>这台机器就挂了</code>。对，就是这么突然，怎么也没想到兼容问题会如此严重。</p>
+<p>为了图方便，直接拿了测试环境的数据库主机来做实验，出现这种情况是始料未及的。出现问题后，因为服务不可用，好几个人过来找。捅了大篓子了 :(</p>
+<p>所以，为了继(bao)续(zhu)革(fan)命(wan)，至少要把数据库找回来。</p>
+<h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><ul>
+<li>软连接建立完成后，尝试运行构建，片刻后失去响应，然后所有终端断开连接。</li>
+<li>在PVE管理平台上，看到该虚拟机处于io-error状态，CPU和内存图表数值陡将至极低，不波动。磁盘读写直接降为0。</li>
+<li>尝试在PVE管理平台重启，重启报错，无法操作恢复虚拟机状态。</li>
+<li>尝试登入宿主机，直接使用命令与宿主机通讯，依然报错。</li>
+<li>尝试重启宿主机，重启完毕后，该虚拟机启动成功。但是，一直无法ping通，说明网络服务无法启动，无法远程连接。</li>
+<li>全程慌得一比</li>
+</ul>
+<h2 id="解决过程"><a href="#解决过程" class="headerlink" title="解决过程"></a>解决过程</h2><ul>
+<li>因为很笃定是由于修改libc的链接指向，导致问题的发生。所以解决问题的关键就是在于如何把这个文件再修改回去。</li>
+<li>但是如何修改一个无法登入的KVM虚拟机下面的文件，以前从来没有接触过这方面的操作，只知道KVM虚拟机会有一个镜像文件，和VM和vbox做的虚拟机镜像文件类似。</li>
+<li><p>登入宿主机，经过搜索发现了虚拟机镜像存储路径</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/lib/vz/images/108/vm-108-disk-1.raw</span><br></pre></td></tr></table></figure>
+<p>  在这里补充一下，openvz虚拟机根目录的目录在如下路径，xxx为CT的ID</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/lib/vz/private/xxx/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>找到了镜像文件，就考虑能否将该文件像虚拟光驱加载镜像一样挂载到某个目录，这样我们就可以进入这个镜像文件了，即使不能修改文件，至少可以把数据库文件拷贝出来</p>
+</li>
+<li><p>经过一番搜寻，发现可以先将镜像文件映射至循环设备（<code>loop device</code>），然后挂载至文件系统，具体过程如下：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查找可用的loop device</span></span><br><span class="line">root@pve:~<span class="comment"># losetup -f</span></span><br><span class="line">/dev/loop0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将镜像文件映射至该循环设备，也可以挂载img后缀的文件</span></span><br><span class="line">root@pve:~<span class="comment"># losetup /dev/loop0 /var/lib/vz/images/108/vm-108-disk-1.raw</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 因为急于求成，执行完本步骤后尝试挂载至文件系统，报错如下</span></span><br><span class="line">root@pve:~<span class="comment"># mount /dev/loop0 /mnt/108</span></span><br><span class="line">mount: unknown filesystem <span class="built_in">type</span> <span class="string">'LVM2_member'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取虚拟设备的分区</span></span><br><span class="line">root@pve:~<span class="comment"># kpartx -av /dev/loop0</span></span><br><span class="line">add map loop0p1 : 0 7727202 linear /dev/loop0 63</span><br><span class="line">add map loop0p2 : 0 449757 linear /dev/loop0 7727328</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看卷（volume）状态</span></span><br><span class="line">root@pve:~<span class="comment"># lvscan</span></span><br><span class="line">inactive          <span class="string">'/dev/vg_ta/lv_root'</span> [28.37 GiB] inherit</span><br><span class="line">inactive          <span class="string">'/dev/vg_ta/lv_home'</span> [25.26 GiB] inherit</span><br><span class="line">inactive          <span class="string">'/dev/vg_ta/lv_swap'</span> [5.88 GiB] inherit</span><br><span class="line"></span><br><span class="line"><span class="comment"># 此时挂载会报错</span></span><br><span class="line">root@pve:~<span class="comment"># mount /dev/vg_ta/lv_root /mnt/108</span></span><br><span class="line">mount: special device /dev/vg_ta/lv_root does not exist</span><br><span class="line"></span><br><span class="line"><span class="comment"># 激活所有的卷</span></span><br><span class="line">root@pve:~<span class="comment"># vgchange -ay</span></span><br><span class="line">3 logical volume(s) <span class="keyword">in</span> volume group <span class="string">"vg_ta"</span> now active</span><br><span class="line"></span><br><span class="line"><span class="comment"># 挂载成功</span></span><br><span class="line">root@pve:~<span class="comment"># mount /dev/vg_ta/lv_root /mnt/108</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 成功进入虚拟机文件系统</span></span><br><span class="line">root@pve:~<span class="comment"># ll /mnt/108</span></span><br><span class="line">total 304</span><br><span class="line">dr-xr-xr-x.  26 root root   4096 Mar  2 10:33 .</span><br><span class="line">drwxr-xr-x    4 root root   4096 Mar  2 11:03 ..</span><br><span class="line">dr-xr-xr-x.   2 root root   4096 Mar  2 03:45 bin</span><br><span class="line">drwxr-xr-x.   2 root root   4096 Mar 20  2013 boot</span><br><span class="line">drwxr-xr-x.   2 root root   4096 Sep 24  2011 cgroup</span><br><span class="line">drwxr-xr-x.  16 root root   4096 Mar  1 18:17 data</span><br><span class="line">drwxr-xr-x.   2 root root   4096 Mar 20  2013 dev</span><br><span class="line">drwxr-xr-x. 103 root root  12288 Mar  2 10:33 etc</span><br><span class="line">drwxr-xr-x.   2 root root   4096 Mar 20  2013 home</span><br><span class="line">dr-xr-xr-x.  13 root root   4096 Mar  2 03:45 lib</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>到此，心已经放到肚子里了</p>
+<ul>
+<li>恢复libc软链接指向。</li>
+<li>重启虚拟机</li>
+<li>服务恢复正常</li>
+</ul>
+</li>
+</ul>
+<h2 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h2><ul>
+<li>实验性的操作要新开主机，不要嫌麻烦，否则真是得不偿失；</li>
+<li>底层类库升级要慎重，如果需要新版本类库特性，最好使用新版操作系统；</li>
+<li>数据库务必要备份，哪怕是开发或测试环境；</li>
+</ul>
+<h2 id="扩展知识"><a href="#扩展知识" class="headerlink" title="扩展知识"></a>扩展知识</h2><ul>
+<li><p>linux系统中分区和卷的区别与联系</p>
+<ul>
+<li>分区是基于物理磁盘的，是系统文件管理时识别用的磁盘地址，分区表是直接写在 MBR 或者 GPT 里面的，相对于卷来说更为底层。</li>
+<li><p>卷是由LVM(Logical Volume Manager)进行管理，LVM是在磁盘分区和文件系统之间添加的一个逻辑层。通俗来讲就是把若干物理磁盘看为一个整体，在这个整体上进行逻辑分卷，以实现linux系统动态扩充磁盘容量的需求。</p>
+<p><img src="https://attrany.oss-cn-beijing.aliyuncs.com/notes/20190507222452.png" alt="LVM示意图"></p>
+</li>
+</ul>
+</li>
+<li><p>什么是循环设备(loop device)</p>
+<ul>
+<li>在类 UNIX 系统里，loop 设备是一种伪设备(pseudo-device)，或者也可以说是仿真设备。它能使我们像块设备一样访问一个文件。</li>
+<li>在使用之前，一个 loop 设备必须要和一个文件进行连接。这种结合方式给用户提供了一个替代块特殊文件的接口。因此，如果这个文件包含有一个完整的文件系统，那么这个文件就可以像一个磁盘设备一样被 mount 起来。</li>
+<li>上面说的文件格式，我们经常见到的是 CD 或 DVD 的 ISO 光盘镜像文件或者是软盘(硬盘)的 *.img 镜像文件。通过这种 loop mount (回环mount)的方式，这些镜像文件就可以被 mount 到当前文件系统的一个目录下。</li>
+</ul>
+</li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://equivocation.org/node/107" target="_blank" rel="noopener">Accessing the contents of a KVM disk image</a></li>
+<li><a href="http://www.fedoraforum.org/forum/archive/index.php/t-64964.html" target="_blank" rel="noopener">How to mount LVM volumes, help!</a></li>
+<li><a href="http://pissedoffadmins.com/os/mount-unknown-filesystem-type-lvm2_member.html" target="_blank" rel="noopener">mount: unknown filesystem type ‘LVM2_member’</a></li>
+<li><a href="http://www.cnblogs.com/Jer-/p/3330128.html" target="_blank" rel="noopener">linux下使用kpartx挂载虚拟文件系统</a></li>
+<li><a href="http://blog.csdn.net/ustc_dylan/article/details/6878252" target="_blank" rel="noopener">loop设备及losetup命令介绍</a></li>
+<li><a href="http://baike.baidu.com/item/LVM" target="_blank" rel="noopener">LVM - 百度百科</a></li>
+</ul>
+
+                </div>
+            </div>
+    
+            <nav class="post-pagination">
+    
+    <a class="newer-posts" href="/2019/04/30/restore/">
+        上一篇<br>开启新篇章
+    </a>
+    
+    <span class="page-number"></span>
+    
+    <a class="older-posts" href="/2017/03/02/build-android-project-by-gitlab-ci/">
+        下一篇<br>使用gitlab-ci进行android项目构建
+    </a>
+    
+</nav>
+
+    
+            
+
+
+        </div>
+    </div>
+    <div class="single-column-footer">
+    Proudly published with Hexo<br>
+    
+    Theme <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> by <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a><br>
+    
+    &copy; 2019 <a href="http://notes.attrany.com">万有引力</a>
+</div>
+</div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.4/dist/umd/popper.min.js" integrity="sha256-EGs9T1xMHdvM1geM8jPpoo8EZ1V1VRsmcJz8OByENLA=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha256-VsEqElsCHSGmnmHXGQzvoWjWwoznFSZc6hs7ARLRacQ=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.min.js" integrity="sha256-FtWfRI+thWlNz2sB3SJbwKx5PgMyKIVgwHCTwa3biXc=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@14.2.1/dist/smooth-scroll.polyfills.min.js" integrity="sha256-CI4Gq5E0io1Pv0xM3qPM+NUIOhbIBvC3GiN1Y4KhXpw=" crossorigin="anonymous"></script>
+<script src="/js/journal.js?35547184"></script>
+
+
+
+<div style="display: none">
+    <script type="text/javascript" src="https://s5.cnzz.com/z_stat.php?id=1277478352&web_id=1277478352"></script>
+</div>
+</body>
+</html>
